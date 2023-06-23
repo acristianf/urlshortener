@@ -77,11 +77,14 @@ app.post("/api/shorturl", (req, res) => {
                       short_url: doc["short_url"]
                     });
                   };
+                })
+                .catch(() => {
+                  res.json({ error: "POST: /api/shorturl, findOne, unexpected error" });
                 });
             };
           })
           .catch(() => {
-            res.json({ error: "Unexpected error" });
+            res.json({ error: "POST: /api/shorturl, Unexpected error" });
           });
       };
     });
@@ -99,6 +102,11 @@ app.get("/api/shorturl/:short_url?", (req, res) => {
           error: "No short URL found for the given input"
         })
       }
+    })
+    .catch(() => {
+      res.json({
+        error: "GET: /api/shortur/:short_url?, Unexpected error"
+      });
     });
 });
 
