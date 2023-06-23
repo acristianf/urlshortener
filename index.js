@@ -59,24 +59,26 @@ app.post("/api/shorturl", (req, res) => {
                 .sort("-short_url")
                 .exec()
                 .then((found) => {
+                  var doc;
                   if (!found) {
-                    urlModel.create({
+                    doc = new urlModel({
                       original_url: dataObj["url"],
                       short_url: 1
                     });
+                    doc.save();
                   } else {
                     let current_short_url = found["short_url"];
                     current_short_url += 1;
-                    const doc = new urlModel({
+                    doc = new urlModel({
                       original_url: dataObj["url"],
                       short_url: current_short_url
                     });
                     doc.save();
-                    res.json({
-                      original_url: doc["original_url"],
-                      short_url: doc["short_url"]
-                    });
                   };
+                  res.json({
+                    original_url: doc["original_url"],
+                    short_url: doc["short_url"]
+                  })
                 })
                 .catch(() => {
                   res.json({ error: "POST: /api/shorturl, findOne, unexpected error" });
