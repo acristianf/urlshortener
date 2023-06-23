@@ -79,6 +79,9 @@ app.post("/api/shorturl", (req, res) => {
                   };
                 });
             };
+          })
+          .catch(() => {
+            res.json({ error: "Unexpected error" });
           });
       };
     });
